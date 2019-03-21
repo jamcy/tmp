@@ -3,39 +3,37 @@ apply plugin: 'groovy'
 
 sourceCompatibility = 1.8
 
-project.ext.lwjglVersion = "3.1.6"
+project.ext.lwjglVersion = "3.2.1"
+
 switch (org.gradle.internal.os.OperatingSystem.current()) {
-    case org.gradle.internal.os.OperatingSystem.WINDOWS:
-        project.ext.lwjglNatives = "natives-windows"
-        break
-    case org.gradle.internal.os.OperatingSystem.LINUX:
-        project.ext.lwjglNatives = "natives-linux"
-        break
-    case org.gradle.internal.os.OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "natives-macos"
-        break
+  case org.gradle.internal.os.OperatingSystem.WINDOWS:
+    project.ext.lwjglNatives = "natives-windows"
+    break
+  case org.gradle.internal.os.OperatingSystem.LINUX:
+    project.ext.lwjglNatives = "natives-linux"
+    break
+  case org.gradle.internal.os.OperatingSystem.MAC_OS:
+    project.ext.lwjglNatives = "natives-macos"
+    break
 }
 
 repositories {
-    mavenCentral()
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+  maven { url "http://repo.maven.apache.org/maven2" }
 }
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:2.4.15"
+  compile "org.codehaus.groovy:groovy-all:2.4.15"
 
-    compile "org.lwjgl:lwjgl:${lwjglVersion}"
-    compile "org.lwjgl:lwjgl-glfw:${lwjglVersion}"
-    compile "org.lwjgl:lwjgl-jemalloc:${lwjglVersion}"
-    compile "org.lwjgl:lwjgl-openal:${lwjglVersion}"
-    compile "org.lwjgl:lwjgl-opengl:${lwjglVersion}"
-    compile "org.lwjgl:lwjgl-stb:${lwjglVersion}"
+  compile group: 'org.joml',  name: 'joml-camera', version:'1.2.0-SNAPSHOT'
+  compile group: 'org.lwjgl', name: 'lwjgl', version: "$lwjglVersion"
+  compile group: 'org.lwjgl', name: 'lwjgl-glfw', version: "$lwjglVersion"
+  compile group: 'org.lwjgl', name: 'lwjgl-opengl', version: "$lwjglVersion"
+  compile group: 'org.lwjgl', name: 'lwjgl-stb', version: "$lwjglVersion"
+  compile group: 'org.lwjgl', name: 'lwjgl', version: "$lwjglVersion", classifier: "$lwjglNatives"
+  compile group: 'org.lwjgl', name: 'lwjgl-opengl', version: "$lwjglVersion", classifier: "$lwjglNatives"
+  compile group: 'org.lwjgl', name: 'lwjgl-glfw', version: "$lwjglVersion", classifier: "$lwjglNatives"
+  compile group: 'org.lwjgl', name: 'lwjgl-stb', version: "$lwjglVersion", classifier: "$lwjglNatives"
 
-    runtime "org.lwjgl:lwjgl:${lwjglVersion}:${lwjglNatives}"
-    runtime "org.lwjgl:lwjgl-glfw:${lwjglVersion}:${lwjglNatives}"
-    runtime "org.lwjgl:lwjgl-jemalloc:${lwjglVersion}:${lwjglNatives}"
-    runtime "org.lwjgl:lwjgl-openal:${lwjglVersion}:${lwjglNatives}"
-    runtime "org.lwjgl:lwjgl-opengl:${lwjglVersion}:${lwjglNatives}"
-    runtime "org.lwjgl:lwjgl-stb:${lwjglVersion}:${lwjglNatives}"
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'junit', name: 'junit', version: '4.12'
 }
