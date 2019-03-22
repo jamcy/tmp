@@ -1,13 +1,9 @@
 package jamcy;
 
-import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
-
-import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
@@ -59,22 +55,19 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Game {
-  // The window handle
   private long window;
 
   private void run() {
-    System.out.println("Hello LWJGL " + Version.getVersion() + "!");
+    try {
+      init();
+      loop();
+    } finally {
+      glfwFreeCallbacks(window);
+      glfwDestroyWindow(window);
 
-    init();
-    loop();
-
-    // Free the window callbacks and destroy the window
-    glfwFreeCallbacks(window);
-    glfwDestroyWindow(window);
-
-    // Terminate GLFW and free the error callback
-    glfwTerminate();
-    glfwSetErrorCallback(null).free();
+      glfwTerminate();
+      glfwSetErrorCallback(null).free();
+    }
   }
 
   private void init() {
@@ -105,14 +98,14 @@ public class Game {
 
     // Get the thread stack and push a new frame
     try (MemoryStack stack = stackPush()) {
-      IntBuffer pWidth = stack.mallocInt(1); // int*
-      IntBuffer pHeight = stack.mallocInt(1); // int*
+      var pWidth = stack.mallocInt(1); // int*
+      var pHeight = stack.mallocInt(1); // int*
 
       // Get the window size passed to glfwCreateWindow
       glfwGetWindowSize(window, pWidth, pHeight);
 
       // Get the resolution of the primary monitor
-      GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+      var vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
       // Center the window
       glfwSetWindowPos(
@@ -126,8 +119,6 @@ public class Game {
     glfwMakeContextCurrent(window);
     // Enable v-sync
     glfwSwapInterval(1);
-
-    // Make the window visible
     glfwShowWindow(window);
   }
 
@@ -147,14 +138,9 @@ public class Game {
     glLinkProgram(programId);
     glValidateProgram(programId);
 
-    // Set the clear color
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    // Run the rendering loop until the user has attempted to close
-    // the window or has pressed the ESCAPE key.
     while (!glfwWindowShouldClose(window)) {
-      // Poll for window events. The key callback above will only be
-      // invoked during this call.
       glfwPollEvents();
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
@@ -170,7 +156,7 @@ public class Game {
 
       glUseProgram(0);
 
-      glfwSwapBuffers(window); // swap the color buffers
+      glfwSwapBuffers(window);
     }
   }
 

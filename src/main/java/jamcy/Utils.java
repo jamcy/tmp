@@ -1,16 +1,15 @@
 package jamcy;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
+import org.apache.commons.io.IOUtils;
 
-public class Utils {
+import java.nio.charset.StandardCharsets;
+
+public final class Utils {
+  private Utils() {}
+
   public static String readShader(String name) {
-    try {
-      Path path = Paths.get(ClassLoader.getSystemResource(name).toURI());
-      return Files.readAllLines(path).stream()
-          .collect(Collectors.joining("\n"));
+    try (var shaderResource = ClassLoader.getSystemResourceAsStream(name)) {
+      return String.join("\n", IOUtils.readLines(shaderResource, StandardCharsets.UTF_8));
     } catch (Exception e) {
       throw new IllegalArgumentException(e);
     }
