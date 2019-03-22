@@ -92,14 +92,15 @@ public class Game {
 
     // Setup a key callback. It will be called every time a key is pressed, repeated or released.
     glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
+      if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+      }
     });
 
     // Get the thread stack and push a new frame
     try (MemoryStack stack = stackPush()) {
-      var pWidth = stack.mallocInt(1); // int*
-      var pHeight = stack.mallocInt(1); // int*
+      var pWidth = stack.mallocInt(1);
+      var pHeight = stack.mallocInt(1);
 
       // Get the window size passed to glfwCreateWindow
       glfwGetWindowSize(window, pWidth, pHeight);
@@ -109,13 +110,12 @@ public class Game {
 
       // Center the window
       glfwSetWindowPos(
-              window,
-              (vidmode.width() - pWidth.get(0)) / 2,
-              (vidmode.height() - pHeight.get(0)) / 2
+          window,
+          (vidmode.width() - pWidth.get(0)) / 2,
+          (vidmode.height() - pHeight.get(0)) / 2
       );
-    } // the stack frame is popped automatically
+    }
 
-    // Make the OpenGL context current
     glfwMakeContextCurrent(window);
     // Enable v-sync
     glfwSwapInterval(1);
@@ -162,7 +162,7 @@ public class Game {
 
   private int loadShader(String location, int type) {
     final int shaderHandle = glCreateShader(type);
-    glShaderSource(shaderHandle, Utils.readShader(location));
+    glShaderSource(shaderHandle, Utils.INSTANCE.readShader(location));
     glCompileShader(shaderHandle);
 
     if (glGetShaderi(shaderHandle, GL_COMPILE_STATUS) == GL_FALSE) {
