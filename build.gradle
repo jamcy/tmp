@@ -46,18 +46,20 @@ dependencies {
 
 jar {
   manifest {
-    attributes 'Main-Class': 'jamcy.Game'
+    attributes 'Main-Class': 'jamcy.MainKt'
   }
 
   from {
     configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
   }
 }
+
 compileKotlin {
   kotlinOptions {
     jvmTarget = "1.8"
   }
 }
+
 compileTestKotlin {
   kotlinOptions {
     jvmTarget = "1.8"
