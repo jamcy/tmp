@@ -5,51 +5,8 @@ import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL20
 
 import org.lwjgl.glfw.Callbacks.glfwFreeCallbacks
-import org.lwjgl.glfw.GLFW.GLFW_FALSE
-import org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE
-import org.lwjgl.glfw.GLFW.GLFW_RELEASE
-import org.lwjgl.glfw.GLFW.GLFW_RESIZABLE
-import org.lwjgl.glfw.GLFW.GLFW_TRUE
-import org.lwjgl.glfw.GLFW.GLFW_VISIBLE
-import org.lwjgl.glfw.GLFW.glfwCreateWindow
-import org.lwjgl.glfw.GLFW.glfwDefaultWindowHints
-import org.lwjgl.glfw.GLFW.glfwDestroyWindow
-import org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor
-import org.lwjgl.glfw.GLFW.glfwGetVideoMode
-import org.lwjgl.glfw.GLFW.glfwGetWindowSize
-import org.lwjgl.glfw.GLFW.glfwInit
-import org.lwjgl.glfw.GLFW.glfwMakeContextCurrent
-import org.lwjgl.glfw.GLFW.glfwPollEvents
-import org.lwjgl.glfw.GLFW.glfwSetErrorCallback
-import org.lwjgl.glfw.GLFW.glfwSetKeyCallback
-import org.lwjgl.glfw.GLFW.glfwSetWindowPos
-import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
-import org.lwjgl.glfw.GLFW.glfwShowWindow
-import org.lwjgl.glfw.GLFW.glfwSwapBuffers
-import org.lwjgl.glfw.GLFW.glfwSwapInterval
-import org.lwjgl.glfw.GLFW.glfwTerminate
-import org.lwjgl.glfw.GLFW.glfwWindowHint
-import org.lwjgl.glfw.GLFW.glfwWindowShouldClose
-import org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT
-import org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT
-import org.lwjgl.opengl.GL11.GL_FALSE
-import org.lwjgl.opengl.GL11.GL_QUADS
-import org.lwjgl.opengl.GL11.glBegin
-import org.lwjgl.opengl.GL11.glClear
-import org.lwjgl.opengl.GL11.glClearColor
-import org.lwjgl.opengl.GL11.glEnd
-import org.lwjgl.opengl.GL11.glVertex2f
-import org.lwjgl.opengl.GL20.GL_COMPILE_STATUS
-import org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER
-import org.lwjgl.opengl.GL20.glAttachShader
-import org.lwjgl.opengl.GL20.glCompileShader
-import org.lwjgl.opengl.GL20.glCreateProgram
-import org.lwjgl.opengl.GL20.glCreateShader
-import org.lwjgl.opengl.GL20.glGetShaderi
-import org.lwjgl.opengl.GL20.glLinkProgram
-import org.lwjgl.opengl.GL20.glShaderSource
-import org.lwjgl.opengl.GL20.glUseProgram
-import org.lwjgl.opengl.GL20.glValidateProgram
+import org.lwjgl.glfw.GLFW.*
+import org.lwjgl.opengl.GL20.*
 import org.lwjgl.system.MemoryStack.stackPush
 import org.lwjgl.system.MemoryUtil.NULL
 
@@ -94,6 +51,12 @@ object Game {
         glfwSetWindowShouldClose(window, true) // We will detect this in the rendering loop
       }
     }
+
+    //    glfwSetMouseButtonCallback(window) { window, button, action, mods ->
+    //    }
+    //
+    //    glfwSetCursorPosCallback(window) {window, xpos, ypos ->
+    //    }
 
     // Get the thread stack and push a new frame
     stackPush().use { stack ->
@@ -149,6 +112,8 @@ object Game {
       glEnd()
 
       glUseProgram(0)
+
+      HexGrid.draw()
 
       glfwSwapBuffers(window)
     }
